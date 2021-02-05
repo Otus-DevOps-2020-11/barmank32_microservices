@@ -113,3 +113,30 @@ RUN apk update \
     && apk add --no-cache ruby-full ruby-dev build-base \
     && gem install bundler:1.17.2
 ```
+# ДЗ № 14
+[![Build Status](https://travis-ci.com/barmank32/trytravis_microservices.svg?branch=docker-4)](https://travis-ci.com/barmank32/trytravis_microservices)
+## Работа ссетью в Docker
+Давайте запустим нашпроект в 2-х bridge сетях. Так , чтобы сервис ui не имел доступа к базе данных.
+```
+docker kill $(docker ps -q)
+docker run -d --network=back_net --name mongo_db -v reddit_db:/data/db mongo:latest
+docker run -d --network=back_net --name post --env POST_DATABASE_HOST=mongo_db barmank32/post:1.0
+docker run -d --network=back_net --name comment --env COMMENT_DATABASE_HOST=mongo_db barmank32/comment:2.0
+docker run -d --network=front_net -p 9292:9292 barmank32/ui:3.0
+
+docker network connect front_net post
+docker network connect front_net comment
+```
+`docker network connect <network> <container>` подключает контейнер к другой сети.
+## Docker-compose
+Файл Docker-compose `docker-compose.yml` в нем можно использовать переменные окружения, которые можно записать в файл `.env`
+Команды
+- `docker-compose up -d` - запустить контейнера в фоне
+- `docker-compose ps` - вывод запущенных контейнеров
+- `docker-compose down` - выключить и удалить
+- `docker-compose config` - проверка и вывод конфигурации
+- `docker-compose restart` - перезапуск
+
+Имя контейнера можно задать директивой `container_name: mongo_db`
+## Задание*
+Запустить контейнер с другими параметрами можно с помощью директивы `command: puma -w 2 --debug`
