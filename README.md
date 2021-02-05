@@ -115,7 +115,7 @@ RUN apk update \
 ```
 # ДЗ № 14
 [![Build Status](https://travis-ci.com/barmank32/trytravis_microservices.svg?branch=docker-4)](https://travis-ci.com/barmank32/trytravis_microservices)
-## Работа ссетью в Docker
+## Работа с сетью в Docker
 Давайте запустим нашпроект в 2-х bridge сетях. Так , чтобы сервис ui не имел доступа к базе данных.
 ```
 docker kill $(docker ps -q)
