@@ -140,3 +140,5 @@ docker network connect front_net comment
 Имя контейнера можно задать директивой `container_name: mongo_db`
 ## Задание*
 Запустить контейнер с другими параметрами можно с помощью директивы `command: puma -w 2 --debug`
+
+[![pipeline status](http://84.252.129.209/homework/example/badges/gitlab-ci-1/pipeline.svg)](http://84.252.129.209/homework/example/-/commits/gitlab-ci-1)
