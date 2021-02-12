@@ -1,0 +1,18 @@
+version: "3.3"
+services:
+  runner:
+    image: "gitlab/gitlab-runner:latest"
+    restart: always
+    volumes:
+      - "/srv/gitlab-runner/config:/etc/gitlab-runner"
+    command: 'register \
+  --non-interactive \
+  --executor "docker" \
+  --docker-image alpine:latest \
+  --url "${GITLAB_URL}" \
+  --registration-token "${GITLAB_TOKEN}" \
+  --description "docker-runner" \
+  --tag-list "${GITLAB_TAG}" \
+  --run-untagged="true" \
+  --locked="false" \
+  --access-level="not_protected"'

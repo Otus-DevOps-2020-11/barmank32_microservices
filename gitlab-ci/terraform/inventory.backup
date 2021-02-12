@@ -1,0 +1,2 @@
+[docker]
+gitlab-ci ansible_host=84.252.130.241

@@ -1,0 +1,31 @@
+---
+# tasks file for gitlab
+- name: gitlab-ce
+  docker_container:
+    name: gitlab-ce
+    image: gitlab/gitlab-ce:latest
+    restart: yes
+    state: started
+    env:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://{{ ansible_host }}'
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2222:22"
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+- name: Display URL
+  debug:
+    msg: "http://{{ ansible_host }}"
+- name: gitlab-runner
+  docker_container:
+    name: gitlab-runner
+    image: gitlab/gitlab-runner:latest
+    restart: yes
+    state: started
+    volumes:
+      - /srv/gitlab-runner/config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,44 @@
+---
+# tasks file for docker
+- name: Install_Docker
+  become: true
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - python-pip
+    state: present
+    update_cache: yes
+- name: PIP install docker-py
+  become: true
+  pip:
+    name: docker-py
+    executable: pip
+- name: Add an Apt signing key, uses whichever key is at the URL
+  become: true
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+- name: Add specified repository into sources list
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+    state: present
+    update_cache: yes
+- name: Install
+  become: true
+  apt:
+    name: docker-ce
+    state: present
+- name: service docker
+  become: true
+  service:
+    name: docker
+    state: started
+    enabled: yes
+- name: Add the user appending the group 'docker'
+  become: true
+  user:
+    name: "{{ansible_ssh_user}}"
+    groups: docker
+    append: yes
