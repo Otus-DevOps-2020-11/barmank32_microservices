@@ -4,7 +4,9 @@ RUN apk update \
     && apk add --no-cache mongodb ruby-full ruby-dev build-base \
     && gem install bundler:1.17.2
 
+EXPOSE 9292
 VOLUME /data/db
+
 ENV APP_HOME /reddit
 WORKDIR $APP_HOME
 COPY reddit/ $APP_HOME
