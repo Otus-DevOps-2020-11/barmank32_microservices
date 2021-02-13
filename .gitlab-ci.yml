@@ -20,7 +20,7 @@ build_image:
   image: docker:latest
   stage: build
   services:
-    - docker:dind
+    - docker:18-dind
   script:
     - echo 'Building docker image'
     - docker build -t my-docker-image .
