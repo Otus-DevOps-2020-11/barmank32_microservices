@@ -17,6 +17,7 @@ build_job:
     - bundle install
 
 build_image:
+  image: docker:latest
   stage: build
   services:
     - docker:dind
