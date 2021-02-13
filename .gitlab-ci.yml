@@ -12,14 +12,14 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 .build:
-  script:
+  before_script:
     - echo 'Extends build'
     - cd reddit
     - bundle install
 
 build_job:
-  stage: build
   extends: .build
+  stage: build
   script:
     - echo 'Building'
 
@@ -34,8 +34,8 @@ build_image:
     - docker build -t reddit .
 
 test_unit_job:
-  stage: test
   extends: .build
+  stage: test
   services:
     - mongo:latest
   script:
