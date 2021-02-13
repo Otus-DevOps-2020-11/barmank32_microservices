@@ -8,6 +8,8 @@ stages:
 
 variables:
   DATABASE_URL: "mongodb://mongo/user_posts"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
 
 build_job:
   stage: build
@@ -20,9 +22,10 @@ build_image:
   image: docker:latest
   stage: build
   services:
-    - docker:18-dind
+    - docker:19.03.0-dind
   script:
     - echo 'Building docker image'
+    - docker info
     - docker build -t my-docker-image .
 
 test_unit_job:
