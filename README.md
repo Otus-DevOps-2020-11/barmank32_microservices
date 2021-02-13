@@ -189,7 +189,7 @@ docker exec -it gitlab-runner gitlab-runner register \
 ### 2.7*.Автоматизация развёртывания GitLab c16
 Реализация автоматического развертывания с помощью terraform и ansible, находится в папке `gitlab-ci`.
 ### 10.1*. Запуск reddit в контейнере
-
+Реализовано в `.gitlab-ci.yml`. Образ приложения собирается из `Dockerfile` в корне.
 ### 10.2*. Автоматизация развёртывания GitLabRunner (по желанию)Runner
 Реализовано с помощью docker-compose, находится в папке `gitlab-ci` файл docker-compose.run.yml.
 ### 10.3*.Настройка оповещений в Slack
