@@ -18,6 +18,13 @@ build_job:
   script:
     - echo 'Building'
 
+build_image:
+  stage: build
+  image: docker:dind
+  script:
+    - echo 'Building docker image'
+    - docker build -t my-docker-image .
+
 test_unit_job:
   stage: test
   services:
