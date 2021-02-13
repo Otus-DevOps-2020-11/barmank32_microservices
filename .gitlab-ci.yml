@@ -9,14 +9,12 @@ stages:
 variables:
   DATABASE_URL: "mongodb://mongo/user_posts"
 
-before_script:
-  - cd reddit
-  - bundle install
-
 build_job:
   stage: build
   script:
     - echo 'Building'
+    - cd reddit
+    - bundle install
 
 build_image:
   stage: build
@@ -59,8 +57,6 @@ branch review:
 staging:
   stage: stage
   when: manual
-  only:
-    - /^\d+\.\d+\.\d+/
   script:
     - echo "Deploy"
   environment:
@@ -70,6 +66,8 @@ staging:
 production:
   stage: production
   when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
   script:
     - echo "Deploy"
   environment:
