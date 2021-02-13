@@ -11,12 +11,17 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
-build_job:
-  stage: build
+.build:
   script:
-    - echo 'Building'
+    - echo 'Extends build'
     - cd reddit
     - bundle install
+
+build_job:
+  stage: build
+  extends: .build
+  script:
+    - echo 'Building'
 
 build_image:
   image: docker:latest
@@ -30,10 +35,10 @@ build_image:
 
 test_unit_job:
   stage: test
+  extends: .build
   services:
     - mongo:latest
   script:
-    - cd reddit
     - ruby simpletest.rb
 
 test_integration_job:
