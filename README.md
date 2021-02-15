@@ -115,8 +115,8 @@ RUN apk update \
 ```
 # ДЗ № 14
 [![Build Status](https://travis-ci.com/barmank32/trytravis_microservices.svg?branch=docker-4)](https://travis-ci.com/barmank32/trytravis_microservices)
-## Работа ссетью в Docker
-Давайте запустим нашпроект в 2-х bridge сетях. Так , чтобы сервис ui не имел доступа к базе данных.
+## Работа с сетью в Docker
+Давайте запустим наш проект в 2-х bridge сетях. Так , чтобы сервис ui не имел доступа к базе данных.
 ```
 docker kill $(docker ps -q)
 docker run -d --network=back_net --name mongo_db -v reddit_db:/data/db mongo:latest
@@ -140,3 +140,57 @@ docker network connect front_net comment
 Имя контейнера можно задать директивой `container_name: mongo_db`
 ## Задание*
 Запустить контейнер с другими параметрами можно с помощью директивы `command: puma -w 2 --debug`
+# ДЗ № 15
+## Установка Gitlab CI
+Создаем директории под volumes
+```
+mkdir -p /srv/gitlab/config /srv/gitlab/data /srv/gitlab/logs
+```
+Подготовим `docker-compose.yml` для запуска Gitlab
+```
+version: "3.3"
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://84.252.129.209'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '2222:22'
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+
+```
+Запуск `docker-compose up -d`
+## Добавление раннера Gitlab CI
+```
+docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
+
+docker exec -it gitlab-runner gitlab-runner register \
+    --url http://84.252.129.209/ \
+    --non-interactive \
+    --locked=false \
+    --name DockerRunner \
+    --executor docker \
+    --docker-image alpine:latest \
+    --registration-token MLn1YmAeKxhafEtJEBCN \
+    --tag-list "linux,xenial,ubuntu,docker" \
+    --run-untagged
+```
+## Настрока Gitlab CI
+Пайплаины описываются в файле `.gitlab-ci.yml`
+## Задание*
+### 2.7*.Автоматизация развёртывания GitLab c16
+Реализация автоматического развертывания с помощью terraform и ansible, находится в папке `gitlab-ci`.
+### 10.1*. Запуск reddit в контейнере
+Реализовано в `.gitlab-ci.yml`. Образ приложения собирается из `Dockerfile` в корне.
+### 10.2*. Автоматизация развёртывания GitLabRunner (по желанию)Runner
+Реализовано с помощью docker-compose, находится в папке `gitlab-ci` файл docker-compose.run.yml.
+### 10.3*.Настройка оповещений в Slack
+канал https://devops-team-otus.slack.com/archives/C01G3C63PL7
