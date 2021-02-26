@@ -7,14 +7,12 @@ services:
     networks:
       - backend
   ui:
-    build: ./ui
     image: ${D_USERNAME}/ui:${UI_TAG}
     ports:
       - ${UI_PORT}:9292/tcp
     networks:
       - frontend
   post:
-    build: ./post-py
     image: ${D_USERNAME}/post:${POST_TAG}
     environment:
     - POST_DATABASE_HOST=mongo_db
@@ -22,16 +20,29 @@ services:
       - frontend
       - backend
   comment:
-    build: ./comment
     image: ${D_USERNAME}/comment:${COMMENT_TAG}
     environment:
     - COMMENT_DATABASE_HOST=mongo_db
     networks:
       - frontend
       - backend
+  prometheus:
+    image: ${D_USERNAME}/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+    networks:
+      - frontend
+      - backend
 
 volumes:
   post_db:
+  prometheus_data:
 
 networks:
   frontend:
