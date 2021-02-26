@@ -14,5 +14,5 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 RUN bundle install
-
+EXPOSE 9292
 CMD ["puma"]

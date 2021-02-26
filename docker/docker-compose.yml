@@ -59,6 +59,13 @@ services:
       - '--mongodb.uri=mongodb://mongo_db:27017'
     networks:
       - backend
+  blackbox-exporter:
+    image: barmank32/blackbox_exporter
+    command:
+      - '--config.file=/etc/blackboxexporter/config.yml'
+    networks:
+      - backend
+      - frontend
 
 volumes:
   post_db:
