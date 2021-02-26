@@ -194,3 +194,9 @@ docker exec -it gitlab-runner gitlab-runner register \
 Реализовано с помощью docker-compose, находится в папке `gitlab-ci` файл docker-compose.run.yml.
 ### 10.3*.Настройка оповещений в Slack
 канал https://devops-team-otus.slack.com/archives/C01G3C63PL7
+
+
+https://hub.docker.com/r/barmank32/prometheus
+https://hub.docker.com/r/barmank32/post
+https://hub.docker.com/r/barmank32/comment
+https://hub.docker.com/r/barmank32/ui
