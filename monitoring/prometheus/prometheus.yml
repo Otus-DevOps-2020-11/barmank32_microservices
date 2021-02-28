@@ -7,12 +7,16 @@ scrape_configs:
     static_configs:
       - targets:
           - "localhost:9090"
+  - job_name: "pushgateway"
+    honor_labels: true
+    static_configs:
+      - targets:
+          - "pushgateway:9091"
 
   - job_name: "ui"
     static_configs:
       - targets:
           - "ui:9292"
-
   - job_name: "comment"
     static_configs:
       - targets:
