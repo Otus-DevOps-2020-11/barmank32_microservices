@@ -40,7 +40,7 @@ services:
       - frontend
       - backend
   node-exporter:
-    image: prom/node-exporter:v0.15.2
+    image: prom/node-exporter:v1.1.1
     user: root
     volumes:
       - /proc:/host/proc:ro
@@ -54,22 +54,33 @@ services:
       - frontend
       - backend
   mongo-exporter:
-    image: barmank32/mongodb_exporter:0.20.2
+    # image: barmank32/mongodb_exporter:0.20.2
+    image: fmet/mongodb_exporter:0.10.0
     command:
-      - '--mongodb.uri=mongodb://mongo_db:27017'
+      - "--mongodb.uri=mongodb://mongo_db:27017"
     networks:
       - backend
   blackbox-exporter:
     image: barmank32/blackbox_exporter
     command:
-      - '--config.file=/etc/blackboxexporter/config.yml'
+      - "--config.file=/etc/blackboxexporter/config.yml"
     networks:
       - backend
+      - frontend
+  grafana:
+    image: grafana/grafana:7.4.3
+    ports:
+      - 3000:3000
+    user: "472:1"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
       - frontend
 
 volumes:
   post_db:
   prometheus_data:
+  grafana_data:
 
 networks:
   frontend:
