@@ -76,6 +76,12 @@ services:
       - grafana_data:/var/lib/grafana
     networks:
       - frontend
+  alertmanager:
+    image: prom/alertmanager:v0.21.0
+    ports:
+      - 9093:9093
+    networks:
+      - frontend
 
 volumes:
   post_db:
