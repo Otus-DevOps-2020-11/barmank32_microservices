@@ -10,7 +10,7 @@ RUN wget https://github.com/percona/mongodb_exporter/archive/v0.20.2.tar.gz && \
 
 RUN make build
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 LABEL maintainer="Alexey Palazhchenko <alexey.palazhchenko@percona.com>"
 
