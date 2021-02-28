@@ -25,7 +25,7 @@ scrape_configs:
     static_configs:
       - targets:
           - "mongo-exporter:9216"
-  - job_name: 'blackbox'
+  - job_name: 'blackbox-http'
     metrics_path: /probe
     params:
       module: [http_2xx]
@@ -34,6 +34,23 @@ scrape_configs:
         - http://ui:9292
         - http://comment:9292/healthcheck
         - http://post:5000/healthcheck
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+  - job_name: 'blackbox-icmp'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - ui
+        - comment
+        - post
+        - prometheus
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

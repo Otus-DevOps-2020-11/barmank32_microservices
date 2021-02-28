@@ -14,3 +14,8 @@ modules:
       tls_config:
         insecure_skip_verify: true
       preferred_ip_protocol: "ip4"
+  icmp:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      preferred_ip_protocol: "ip4"
