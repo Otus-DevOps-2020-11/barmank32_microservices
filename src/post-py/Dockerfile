@@ -9,5 +9,5 @@ ADD . /app
 RUN apk --no-cache --update add build-base && \
     pip install -r /app/requirements.txt && \
     apk del build-base
-
+EXPOSE 5000
 CMD ["python3", "post_app.py"]

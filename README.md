@@ -194,3 +194,38 @@ docker exec -it gitlab-runner gitlab-runner register \
 Реализовано с помощью docker-compose, находится в папке `gitlab-ci` файл docker-compose.run.yml.
 ### 10.3*.Настройка оповещений в Slack
 канал https://devops-team-otus.slack.com/archives/C01G3C63PL7
+# ДЗ № 16
+## Запуск Prometheus
+Запустим Prometheus в Docker
+```
+$ docker run --rm -p 9090:9090 -d --name prometheus  prom/prometheus
+```
+## Targets
+Target используется для сбора информации
+```
+  - job_name: "prometheus"
+    static_configs:
+      - targets:
+          - "localhost:9090"
+```
+## Exporters
+Exporter используется для сбора информации не совместимой с Prometheus
+Например: Node exporter для сбора информации о работе Docker хоста
+
+### Завершение работы
+https://hub.docker.com/r/barmank32/prometheus
+https://hub.docker.com/r/barmank32/post
+https://hub.docker.com/r/barmank32/comment
+https://hub.docker.com/r/barmank32/ui
+## Задание*
+### мониторинг  MongoDB
+Использовал https://github.com/percona/mongodb_exporter/tree/exporter_v2 последней версии 0.20.2
+### Blackbox exporter
+Использовал https://hub.docker.com/r/prom/blackbox-exporter последней версии
+### Makefile
+Создан `Makefile` для сборки и отправки образов в регистри.
+```
+make        - справка
+make build  - сборка
+make push   - отправка
+```
