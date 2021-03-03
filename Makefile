@@ -2,7 +2,7 @@ DB = docker build -t
 DP = docker push
 
 ifeq ($(USER_NAME),)
-    $(info USER_NAME is empty)
+    $(info USER_NAME is empty. Examle export USER_NAME=user)
 	exit 1
 endif
 
