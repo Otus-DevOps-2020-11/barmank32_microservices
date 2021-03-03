@@ -28,13 +28,13 @@ services:
       - frontend
       - backend
   mongo-exporter:
-    image: barmank32/mongodb_exporter:0.20.2
+    image: ${D_USERNAME}/mongodb_exporter:0.20.2
     command:
       - "--mongodb.uri=mongodb://mongo_db:27017"
     networks:
       - backend
   blackbox-exporter:
-    image: barmank32/blackbox_exporter
+    image: ${D_USERNAME}/blackbox_exporter
     command:
       - "--config.file=/etc/blackboxexporter/config.yml"
     networks:
@@ -62,6 +62,14 @@ services:
       - prometheus
     ports:
       - 3000:3000
+    networks:
+      - frontend
+  alertmanager:
+    image: ${D_USERNAME}/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
     networks:
       - frontend
 

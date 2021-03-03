@@ -12,7 +12,7 @@ all:
 
 build: monitoring src
 
-monitoring: blackbox mongo prometheus
+monitoring: blackbox mongo prometheus alertmanager
 src: comment post ui
 
 blackbox:
@@ -20,6 +20,9 @@ blackbox:
 
 mongo:
 	$(DB) $(USER_NAME)/mongodb_exporter:0.20.2 monitoring/mongo-exporter
+
+alertmanager:
+	$(DB) $(USER_NAME)/alertmanager monitoring/alertmanager
 
 prometheus:
 	$(DB) $(USER_NAME)/prometheus monitoring/prometheus
@@ -38,7 +41,8 @@ push:
 	$(DP) $(USER_NAME)/post
 	$(DP) $(USER_NAME)/ui
 	$(DP) $(USER_NAME)/prometheus
+	$(DP) $(USER_NAME)/alertmanager
 	$(DP) $(USER_NAME)/blackbox_exporter
 	$(DP) $(USER_NAME)/mongodb_exporter:0.20.2
 
-.PHONY: blackbox mongo prometheus comment post ui push
+.PHONY: blackbox mongo prometheus comment post ui push alertmanager
