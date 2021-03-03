@@ -27,6 +27,9 @@ alertmanager:
 prometheus:
 	$(DB) $(USER_NAME)/prometheus monitoring/prometheus
 
+telegraf:
+	$(DB) $(USER_NAME)/telegraf monitoring/telegraf
+
 comment:
 	$(DB) $(USER_NAME)/comment src/comment
 
@@ -42,7 +45,8 @@ push:
 	$(DP) $(USER_NAME)/ui
 	$(DP) $(USER_NAME)/prometheus
 	$(DP) $(USER_NAME)/alertmanager
+	$(DP) $(USER_NAME)/telegraf
 	$(DP) $(USER_NAME)/blackbox_exporter
 	$(DP) $(USER_NAME)/mongodb_exporter:0.20.2
 
-.PHONY: blackbox mongo prometheus comment post ui push alertmanager
+.PHONY: blackbox mongo prometheus comment post ui push alertmanager telegraf

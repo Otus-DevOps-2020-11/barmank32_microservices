@@ -72,6 +72,14 @@ services:
       - 9093:9093
     networks:
       - frontend
+  telegraf:
+    image: ${D_USERNAME}/telegraf
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 9273:9273
+    networks:
+      - frontend
 
 volumes:
   prometheus_data:

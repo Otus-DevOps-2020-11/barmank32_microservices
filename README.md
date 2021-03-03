@@ -229,3 +229,7 @@ make        - справка
 make build  - сборка
 make push   - отправка
 ```
+
+
+
+docker run --rm telegraf:1.17-alpine telegraf -sample-config --input-filter docker_log --output-filter prometheus_client > telegraf.conf
