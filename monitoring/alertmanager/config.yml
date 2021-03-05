@@ -1,3 +1,6 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/TOKEN'
+
 route:
   receiver: "slack-notifications"
   routes:

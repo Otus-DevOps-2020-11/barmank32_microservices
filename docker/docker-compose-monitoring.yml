@@ -70,8 +70,8 @@ services:
       - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
       - SLACK_USER=${SLACK_USER:-alertmanager}
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
+    # command:
+    #   - '--config.file=/etc/alertmanager/config.yml'
     ports:
       - 9093:9093
     networks:
