@@ -58,6 +58,21 @@ scrape_configs:
       - targets:
         - '10.0.1.1:9273'
 
+  - job_name: 'yc-monitoring-export'
+    metrics_path: '/monitoring/v2/prometheusMetrics'
+    params:
+      folderId:
+        - 'b1g3ohh4eqd4pok4ompb'
+      service:
+        - 'compute'
+    bearer_token_file: 'api-key.yml'
+    static_configs:
+      - targets: ['monitoring.api.cloud.yandex.net']
+        labels:
+          folderId: 'b1g3ohh4eqd4pok4ompb'
+          service: 'compute'
+
+
 rule_files:
   - "alerts.yml"
 
