@@ -1,0 +1,22 @@
+groups:
+  - name: alert.rules
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: page
+        annotations:
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute"
+          summary: "Instance {{ $labels.instance }} down"
+
+  - name: Docker telegraf
+    rules:
+      - alert: cpu usage  over 50 percent
+        expr: rate(docker_container_cpu_usage_percent[1m]) > 50
+        for: 1m
+        labels:
+          severity: info
+        annotations:
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been CPU Overload more than 1 minute"
+          summary: "Instance {{ $labels.instance }} CPU Overload"

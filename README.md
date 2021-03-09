@@ -229,3 +229,111 @@ make        - справка
 make build  - сборка
 make push   - отправка
 ```
+# ДЗ № 17
+## cAdvisor
+Добавим запуск cAdvisor для мониторинга контейнеров
+```
+# docker-compose-monitoring.yml
+  cadvisor:
+    image: google/cadvisor:v0.29.0
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+    ports:
+      - "8080:8080"
+```
+```
+# prometheus.yml
+  - job_name: "cadvisor"
+    static_configs:
+      - targets:
+          - "cadvisor:8080"
+```
+## Grafana
+Добавим Grafana для визуализации метрик
+```
+# docker-compose-monitoring.yml
+  grafana:
+    image: grafana/grafana:5.0.0
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+volumes:
+  grafana_data:
+```
+## Alertmanager
+Добавим Alertmanager для оправки сообшений при проблемах
+```
+# docker-compose-monitoring.yml
+  alertmanager:
+    image: ${D_USERNAME}/alertmanager
+    environment:
+      - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
+      - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
+      - SLACK_USER=${SLACK_USER:-alertmanager}
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+    ports:
+      - 9093:9093
+```
+Alert rules
+```
+# monitoring/prometheus/alerts.yml
+groups:
+  - name: alert.rules
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: page
+        annotations:
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute"
+          summary: "Instance {{ $labels.instance }} down"
+```
+```
+# prometheus.yml
+rule_files:
+  - "alerts.yml"
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "alertmanager:9093"
+```
+Docker HUB Repository https://hub.docker.com/u/barmank32
+## Задание*
+1. Makefile обновлен
+2. Docker Engine Metrics.json
+3. Docker Metrics Telegraf.json
+создание настроенного конфига для Telegraf
+```
+docker run --rm telegraf:1.17-alpine telegraf -sample-config --input-filter docker_log --output-filter prometheus_client > telegraf.conf
+```
+4. Отправка на e-mail
+5. Сбор метрик с Яндекс.Облака
+```
+  - job_name: 'yc-monitoring-export'
+    metrics_path: '/monitoring/v2/prometheusMetrics'
+    params:
+      folderId:
+        - 'b1g3ohh4eqd4pok4ompb'
+      service:
+        - 'compute'
+    bearer_token_file: 'api-key.yml'
+    static_configs:
+      - targets: ['monitoring.api.cloud.yandex.net']
+        labels:
+          folderId: 'b1g3ohh4eqd4pok4ompb'
+          service: 'compute'
+```

@@ -2,7 +2,7 @@ DB = docker build -t
 DP = docker push
 
 ifeq ($(USER_NAME),)
-    $(info USER_NAME is empty)
+    $(info USER_NAME is empty. Examle export USER_NAME=user)
 	exit 1
 endif
 
@@ -12,7 +12,7 @@ all:
 
 build: monitoring src
 
-monitoring: blackbox mongo prometheus
+monitoring: blackbox mongo prometheus alertmanager
 src: comment post ui
 
 blackbox:
@@ -21,8 +21,14 @@ blackbox:
 mongo:
 	$(DB) $(USER_NAME)/mongodb_exporter:0.20.2 monitoring/mongo-exporter
 
+alertmanager:
+	$(DB) $(USER_NAME)/alertmanager monitoring/alertmanager
+
 prometheus:
 	$(DB) $(USER_NAME)/prometheus monitoring/prometheus
+
+telegraf:
+	$(DB) $(USER_NAME)/telegraf monitoring/telegraf
 
 comment:
 	$(DB) $(USER_NAME)/comment src/comment
@@ -38,7 +44,9 @@ push:
 	$(DP) $(USER_NAME)/post
 	$(DP) $(USER_NAME)/ui
 	$(DP) $(USER_NAME)/prometheus
+	$(DP) $(USER_NAME)/alertmanager
+	$(DP) $(USER_NAME)/telegraf
 	$(DP) $(USER_NAME)/blackbox_exporter
 	$(DP) $(USER_NAME)/mongodb_exporter:0.20.2
 
-.PHONY: blackbox mongo prometheus comment post ui push
+.PHONY: blackbox mongo prometheus comment post ui push alertmanager telegraf
