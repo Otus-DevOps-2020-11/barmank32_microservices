@@ -14,6 +14,7 @@ build: monitoring src
 
 monitoring: blackbox mongo prometheus alertmanager
 src: comment post ui
+logging: fluentd
 
 blackbox:
 	$(DB) $(USER_NAME)/blackbox_exporter:$(TAG) monitoring/blackbox-exporter
@@ -39,6 +40,9 @@ post:
 ui:
 	$(DB) $(USER_NAME)/ui:$(TAG) src/ui
 
+fluentd:
+	$(DB) $(USER_NAME)/fluentd:$(TAG) logging/fluentd
+
 push:
 	$(DP) $(USER_NAME)/comment:$(TAG)
 	$(DP) $(USER_NAME)/post:$(TAG)
@@ -54,4 +58,4 @@ srcpush:
 	$(DP) $(USER_NAME)/post:$(TAG)
 	$(DP) $(USER_NAME)/ui:$(TAG)
 
-.PHONY: blackbox mongo prometheus comment post ui push alertmanager telegraf
+.PHONY: blackbox mongo prometheus comment post ui push alertmanager telegraf fluentd
