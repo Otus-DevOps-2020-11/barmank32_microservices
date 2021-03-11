@@ -58,4 +58,7 @@ srcpush:
 	$(DP) $(USER_NAME)/post:$(TAG)
 	$(DP) $(USER_NAME)/ui:$(TAG)
 
+logpush:
+	$(DP) $(USER_NAME)/fluentd:$(TAG)
+
 .PHONY: blackbox mongo prometheus comment post ui push alertmanager telegraf fluentd

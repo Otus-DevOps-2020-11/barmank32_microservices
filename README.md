@@ -337,3 +337,89 @@ docker run --rm telegraf:1.17-alpine telegraf -sample-config --input-filter dock
           folderId: 'b1g3ohh4eqd4pok4ompb'
           service: 'compute'
 ```
+# ДЗ № 18
+## ElasticStack
+Создадим `docker-compose-logging.yml` с описание закуска `Elasticsearch` `Fluentd` `Kibana`.
+### Fluentd
+Настойка `Fluentd` находится в файле `logging/fluentd/fluent.conf`
+```
+<source>
+  @type forward
+  port 24224
+  bind 0.0.0.0
+</source>
+
+<match *.**>
+  @type copy
+  <store>
+    @type elasticsearch
+    host elasticsearch
+    port 9200
+    logstash_format true
+    logstash_prefix fluentd
+    logstash_dateformat %Y%m%d
+    include_tag_key true
+    type_name access_log
+    tag_key @log_name
+    flush_interval 1s
+  </store>
+  <store>
+    @type stdout
+  </store>
+</match>
+```
+Перенаправляем логи в `Fluentd` к контейнерам приложения добавим
+```
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
+```
+### Kibana
+Для лучшей визуализации логов добавим фильтры в `logging/fluentd/fluent.conf`
+```
+# фильтр для тега service.post
+<filter service.post>
+  @type parser
+  format json
+  key_name log
+</filter>
+# фильтры для тега service.ui
+<filter service.ui>
+  @type parser
+  format grok
+  grok_pattern %{RUBY_LOGGER}
+  key_name log
+</filter>
+
+<filter service.ui>
+  @type parser
+  format grok
+  grok_pattern service=%{WORD:service} \| event=%{WORD:event} \| request_id=%{GREEDYDATA:request_id} \| message='%{GREEDYDATA:message}'
+  key_name message
+  reserve_data true
+</filter>
+
+<filter service.ui>
+  @type parser
+  format grok
+  grok_pattern service=%{WORD:service} \| event=%{WORD:event} \| path=%{URIPATH:pach} \| request_id=%{GREEDYDATA:request_id} \| remote_addr=%{IP:remote_addr} \| method= %{WORD:method} \| response_status=%{INT:response:integer}
+  key_name message
+  reserve_data true
+</filter>
+```
+## Трайсинг Zipkin
+Позволяет отобразить время обработки запроса и выяснить где происходит задержка.
+```
+# docker-compose-logging.yml
+  zipkin:
+    image: openzipkin/zipkin:2.21.0
+    ports:
+      - "9411:9411"
+    networks:
+      - frontend
+      - backend
+```
+## Задание*
+В Zipkin найдена задержка в 3сек при открытии post. В приложении post-py в функция `def find_post(id):` строка 167 обнаружено `        time.sleep(3)`.
