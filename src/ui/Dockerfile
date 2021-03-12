@@ -1,8 +1,7 @@
-FROM alpine:latest
+FROM ruby:2.2
 
-RUN apk update \
-    && apk add --no-cache ruby-full ruby-dev build-base \
-    && gem install bundler:1.17.2
+RUN apt-get update -qq && \
+    apt-get install -y build-essential
 
 ENV APP_HOME /app
 ENV POST_SERVICE_HOST post
@@ -14,5 +13,5 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 RUN bundle install
-EXPOSE 9292
+
 CMD ["puma"]

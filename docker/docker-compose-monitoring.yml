@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   prometheus:
-    image: ${D_USERNAME}/prometheus
+    image: ${USERNAME}/prometheus
     ports:
       - "9090:9090"
     volumes:
@@ -28,13 +28,13 @@ services:
       - frontend
       - backend
   mongo-exporter:
-    image: ${D_USERNAME}/mongodb_exporter:0.20.2
+    image: ${USERNAME}/mongodb_exporter:0.20.2
     command:
       - "--mongodb.uri=mongodb://mongo_db:27017"
     networks:
       - backend
   blackbox-exporter:
-    image: ${D_USERNAME}/blackbox_exporter
+    image: ${USERNAME}/blackbox_exporter
     command:
       - "--config.file=/etc/blackboxexporter/config.yml"
     networks:
@@ -65,7 +65,7 @@ services:
     networks:
       - frontend
   alertmanager:
-    image: ${D_USERNAME}/alertmanager
+    image: ${USERNAME}/alertmanager
     environment:
       - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
@@ -77,7 +77,7 @@ services:
     networks:
       - frontend
   telegraf:
-    image: ${D_USERNAME}/telegraf
+    image: ${USERNAME}/telegraf
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
