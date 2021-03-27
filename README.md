@@ -423,3 +423,89 @@ docker run --rm telegraf:1.17-alpine telegraf -sample-config --input-filter dock
 ```
 ## Задание*
 В Zipkin найдена задержка в 3сек при открытии post. В приложении post-py в функция `def find_post(id):` строка 167 обнаружено `        time.sleep(3)`.
+# ДЗ № 19
+## Введение в Kubernetes
+Описывать нечего
+# ДЗ № 20
+## Установка Minikube
+Необходимые компоненты:
+- Kubectl
+
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
+```
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+```
+- VirtualBox
+
+https://www.virtualbox.org/wiki/Downloads
+- Minikube
+
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+```
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+```
+### Minikkube
+- `minikube start --kubernetes-version 1.19.7` - запуск
+- `minikube service <ui>` - открыть NodePort сервис в браузере
+- `minikube service list` - список сервисов
+- `minikube addons list` - список росширений
+- `minikube addons enable <name>` - запустить аддон
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+
+
+
+### Конфигурирование kubectl
+1. Создать cluster:
+```
+kubectl config set-cluster ... cluster_name
+```
+2. Создать данные пользователя (credentials)
+```
+kubectl config set-credentials ... user_name
+```
+3. Создать контекст
+```
+  kubectl config set-context context_name \
+  --cluster=cluster_name \
+  --user=user_name
+```
+4. Использовать контекст
+```
+kubectl config use-context context_name
+```
+### Команды kubectl
+- `kubectl get node` - список нод
+- `kubectl config current-context` - текущий контекст
+- `kubectl config get-contexts` - список всех контекстов
+- `kubectl apply -f <ui-deployment.yml>` - применить конфигурацию
+- `kubectl get deployment` - просмотр диплоймента
+- `kubectl get pods --selector component=<ui>` - поиск подов по селектору
+- `kubectl port-forward <pod-name> 8080:9292` - проброс порта из пода
+- `kubectl describe service <comment>` - просмотреть состояние сервиса
+- `kubectl exec -ti <pod-name> nslookup comment` - запустить внутри пода
+- `kubectl logs <pod-name>` - логи пода
+- `kubectl delete -f <mongodb-service.yml>` - удаление конфигурации
+- `kubectl delete service <mongodb>` - удаление сервиса
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
+- `` -
