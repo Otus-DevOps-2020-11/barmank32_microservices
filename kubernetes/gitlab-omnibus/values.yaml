@@ -8,11 +8,11 @@
 # Recommended to set up an A record on the DNS to *.your-domain.com to point to
 # the baseIP
 # e.g. *.your-domain.com.	A	300	baseIP
-#baseDomain: your-domain.com
+baseDomain: example.com
 
 # legoEmail is a valid email address used by Let's Encrypt. It does not have to
 # be at the baseDomain.
-#legoEmail: you@example.com
+legoEmail: you@example.com
 
 # Optional variables
 # baseIP is an externally provisioned static IP address to use instead of the provisioned one.
@@ -43,7 +43,8 @@ gitlabConfigAccessMode: ReadWriteOnce
 #gitlabConfigStorageSize: 1Gi
 gitlabRunnerImage: gitlab/gitlab-runner:alpine-v10.6.0
 # Valid values for provider are `gke` for Google Container Engine. Leaving it blank (or any othervalue) will disable fast disk options.
-provider: gke
+#provider: gke
+provider: any
 
 # Gitlab pages
 # The following 3 lines are needed to enable gitlab pages.
