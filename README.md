@@ -495,3 +495,9 @@ kubectl config use-context context_name
 `yc managed-kubernetes cluster get-credentials <cluster-name ID> --external`
 http://178.154.211.253:30812/
 ![](https://s582sas.storage.yandex.net/rdisk/d7c0e074b75af3ded29c22a9e26cf0b2e111e28756174626d23269d610b7ad0a/605f5ca6/3BI9McPsZKpPOowg2_KMf6BAlbGoSFzXd1Ni9Y1OPSZjv0Q7ara8l9e8in6huSdW1o_bpRSp1-SrOPbDivvHuQ==?uid=0&filename=Screenshot_20210327_152311.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&fsize=69481&hid=164f04d6b181a44e8e94a4449a9d27d1&media_type=image&tknv=v2&etag=0de17f464e1a89ad321eea539fa46bd8&rtoken=WTkmyvXvic7i&force_default=no&ycrid=na-b0260665bbef3d72314118a6830710f8-downloader9h&ts=5be871b73f580&s=a79f61719a9c3be7eb6c7bb9e56b44667522086a7d4f3d33d3e3b228a9e5a711&pb=U2FsdGVkX1_XggCU3qcOYkX7BIU_V5_G15mMC5dF5l56F_BG90l6WJEJ1MzFi-vW7YN_VqM7S9xDw6hU3n7O9tzKiP2J7KM739nEXUJvaNk)
+
+# ДЗ № 22
+Описывать нечего
+# ДЗ № 23
+## Helm - установка
+https://github.com/helm/helm/releases
