@@ -4,7 +4,7 @@ service:
   externalPort: 5000
 
 image:
-  repository: barmank32/ui
+  repository: barmank32/post
   tag: latest
 
 databaseHost:
