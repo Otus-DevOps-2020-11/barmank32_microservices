@@ -501,3 +501,6 @@ http://178.154.211.253:30812/
 # ДЗ № 23
 ## Helm - установка
 https://github.com/helm/helm/releases
+# ДЗ № 24
+
+helm upgrade --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
